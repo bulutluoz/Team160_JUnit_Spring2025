@@ -2,9 +2,10 @@ package utilities;
 
 import org.openqa.selenium.WebElement;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class C01_ReusableMethods {
+public class ReusableMethods {
 
     // verilen List<WebElement> listesindeki tum web elementleri tek tek ele alip
     // uzerlerindeki yazilari bir List<String> 'e kaydedip
@@ -12,5 +13,14 @@ public class C01_ReusableMethods {
 
     public static List<String> stringListeDonustur(List<WebElement>  webElementList){
 
+            List<String> stringList=new ArrayList<>();
+
+            for(WebElement eachElement: webElementList){
+
+                stringList.add( eachElement.getText());
+
+            }
+
+            return stringList;
     }
 }

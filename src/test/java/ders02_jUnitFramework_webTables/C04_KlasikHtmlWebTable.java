@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import utilities.ReusableMethods;
 
 import java.time.Duration;
 import java.util.List;
@@ -64,17 +65,71 @@ public class C04_KlasikHtmlWebTable {
         // 3.satiri yazdirin
         System.out.println("tablodaki 3.satir : " + satirlarListesi.get(2).getText());
 
+        // tum satirlari reusableMethods kullanarak yazdirin
+        System.out.println("==========Tum Satirlar=============");
+        System.out.println(ReusableMethods.stringListeDonustur(satirlarListesi));
+
 
         //6. Web table’daki sutun sayisinin 4 olduğunu test edin
+        //   Web Tablolari Table / Row (satir) / Data (herbir bilgi)
+        //   seklinde kullanilir.
+        //   Tablo'da sutun yapisi yoktur
+        //   sutun yapisini xpath ile olustururuz
+
+        // sutun sayisini bulabilmek icin herhangi bir satirdaki data sayisina bakabiliriz
+        List<WebElement> dorduncuSatirElementleriList =
+                driver.findElements(By.xpath("//tbody/tr[4]/td"));
+
+        int expectedSutunSayisi = 4;
+        int actualSutunSayisi = dorduncuSatirElementleriList.size();
+
+        Assertions.assertEquals(expectedSutunSayisi,actualSutunSayisi);
+
+
         //7. 3.sutunu yazdirin
+
+        List<WebElement> ucuncuSutunElementleriList =
+                driver.findElements(By.xpath("//tbody/tr/td[1]"));
+
+        System.out.println(ReusableMethods.stringListeDonustur(ucuncuSutunElementleriList));
+
+
         //8. Tablodaki basliklari yazdirin
-        //9. Satir ve sutunu parametre olarak alip, hucredeki bilgiyi döndüren bir method olusturun
+
+        List<WebElement> baslikElementleriList =
+                driver.findElements(By.xpath("//thead/tr/th"));
+
+        System.out.println(ReusableMethods.stringListeDonustur(baslikElementleriList));
+
+
+
+        //9. Satir ve sutunu parametre olarak alip,
+        //   hucredeki bilgiyi döndüren bir method olusturun
+
+        System.out.println(getDataFromCell(2, 2)); // Electronics
+        System.out.println(getDataFromCell(3, 1)); // Medium 25 L Laptop Backpack
+        System.out.println(getDataFromCell(4, 3)); // $39.00
+
         //10. 4.satirdaki category degerinin "Furniture" oldugunu test edin
+
+        String expectedCategory = "Furniture";
+        String actualCategory = getDataFromCell(4,2);
+
+        Assertions.assertEquals(expectedCategory,actualCategory);
+
 
     }
 
 
+     public String getDataFromCell(int satirNo, int sutunNo){
 
+        //  genel xpath :   //tbody/tr[  4  ]/td[    4   ]
+        String dinamikXPath = "//tbody/tr["+ satirNo + "]/td[" + sutunNo + "]";
+
+        WebElement istenenHucreElementi = driver.findElement(By.xpath(dinamikXPath));
+
+        return istenenHucreElementi.getText();
+     }
 
 
 }
